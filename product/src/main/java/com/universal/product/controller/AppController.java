@@ -35,7 +35,6 @@ public class AppController {
         model.addAttribute("brandCount", brandService.findAll().size());
         model.addAttribute("supplierCount", supplierService.findAll().size());
         model.addAttribute("products", productService.criticalStock());
-        model.addAttribute("supplierProductCounts", supplierService.getSupplierProductCounts());
         return "home/index.html";
     }
 }
