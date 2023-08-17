@@ -19,6 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM products WHERE brand_id=:brandId",nativeQuery = true)
     List<Product> findByBrandId(Long brandId);
 
-    @Query(value = "SELECT * FROM products WHERE units_in_stock < 10 ORDER BY units_in_stock ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM products WHERE units_in_stock < 10" +
+            " ORDER BY units_in_stock ASC LIMIT 10", nativeQuery = true)
     List<Product> criticalStock();
 }

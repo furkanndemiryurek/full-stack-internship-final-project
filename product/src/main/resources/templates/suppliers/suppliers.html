@@ -38,7 +38,7 @@
     <div class="app-content-header mb-3">
         <div>
             <button type="button" class="btn btn-primary btn-sm p-2 mt-2 mb-2 my-btn"
-                    style="font-size: 12px;"
+                    style="font-size: 12px; width: 200px !important;"
                     data-toggle="modal" data-target="#addModal">
                 Tedarikçi ekle
             </button>
@@ -157,7 +157,7 @@
             <td class="product-cell sales red-text" th:text="${supplier.supplierDetail.phone}"></td>
             <td class="product-cell sales red-text" th:text="${supplier.supplierDetail.email}"></td>
             <td class="product-cell sales red-text">
-                <button class="btn btn-danger my-btn" data-toggle="modal"
+                <button class="btn btn-danger my-btn-danger" data-toggle="modal"
                         th:attr="data-target='#deleteModal'+${supplier.id}">
                     <i class="material-icons " style="font-size:15px">delete</i></button>
 

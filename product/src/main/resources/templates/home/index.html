@@ -32,7 +32,7 @@
         margin-top: 20px;
     }
 
-    .col-md-6 {
+    .col{
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -73,6 +73,32 @@
         font-weight: bold;
     }
 </style>
+    <style>
+        p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+p strong {
+  font-weight: bold;
+  color: #E74C3C;
+}
+
+p em {
+  font-style: italic;
+  color: #3498DB;
+}
+
+p:first-of-type {
+  font-size: 18px;
+}
+
+p:last-of-type {
+  margin-bottom: 0;
+}
+    </style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -126,12 +152,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 d-flex">
-                <div class="col-md-6">
+            <div class="col-md-12 d-flex" style="justify-content: center;">
+                <div class="col col-md-7">
                     <div id="columnChartContainer">
                         <canvas id="columnChart"></canvas>
                     </div>
-                    <p class="chart-description">Ürün stok miktarlarını gösteren sütun grafiği.</p>
+                    <p class="chart-description">Stok sayısı 10'nun altına düşen 10 ürün.</p>
+                </div>
+
+                <div class="col col-md-4">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Firma</th>
+                            <th scope="col">İletişme Geç</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="supplier: ${suppliers}">
+                            <th><p scope="row" th:text="${supplier.companyName}"></p></th>
+                            <td>
+                                <a th:href="@{/products/supplier(supplierId=${supplier.id})}" class="btn text-light" style="background-color : #FF7F50;">Firma sayfası</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="col-md-6 d-none">
@@ -165,40 +210,58 @@
 </div>
 
 <script>
-    // Tablodaki verileri alın
-    var productRows = document.querySelectorAll('.products-row');
-    var dataLabels = [];
-    var dataValues = [];
+  // Tablodaki verileri alın
+var productRows = document.querySelectorAll('.products-row');
+var dataLabels = [];
+var dataValues = [];
+var supplierNames = [];
 
-    productRows.forEach(function(row) {
-        var productName = row.querySelector('.product-cell:nth-child(2)').textContent;
-        var unitsInStock = parseInt(row.querySelector('.product-cell:nth-child(3)').textContent);
-        dataLabels.push(productName);
-        dataValues.push(unitsInStock);
-    });
+productRows.forEach(function(row) {
+    var productName = row.querySelector('.product-cell:nth-child(2)').textContent;
+    var supplierName = row.querySelector('.product-cell:nth-child(4)').textContent;
+    var unitsInStock = parseInt(row.querySelector('.product-cell:nth-child(3)').textContent);
+    dataLabels.push(productName);
+    dataValues.push(unitsInStock);
+    supplierNames.push(supplierName);
+});
 
-    // Sütun grafiğini oluşturun
-    var ctx = document.getElementById('columnChart').getContext('2d');
-    var columnChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: dataLabels,
-            datasets: [{
-                label: 'Stok miktarı',
-                data: dataValues,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Grafik renkleri
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
+// Sütun grafiğini oluşturun
+var ctx = document.getElementById('columnChart').getContext('2d');
+var columnChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: dataLabels,
+        datasets: [{
+            label: 'Stok miktarı',
+            data: dataValues,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        var label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += context.parsed.y +
+                         '' + supplierNames[context.dataIndex];
+                        return label;
+                    }
                 }
             }
         }
-    });
+    }
+});
 
 
 </script>

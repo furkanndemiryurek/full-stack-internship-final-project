@@ -9,9 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-    @Query("SELECT s.companyName, COUNT(p.id) FROM Supplier s JOIN s.products p GROUP BY s.companyName")
-    List<Object[]> countProductsBySupplier();
-
 
 }
 

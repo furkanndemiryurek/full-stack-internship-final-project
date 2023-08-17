@@ -50,7 +50,9 @@
 <div style="margin-left: auto;" class="app-content">
     <div class="app-content-header d-flex mt-3">
         <div class="col-md-2">
-            <button type="button" class="btn btn-primary btn-sm p-2 mt-2 mb-2 my-btn" style="font-size: 12px;"
+            <button type="button"
+                    class="btn btn-primary btn-sm p-2 mt-2 mb-2 my-btn"
+                    style="font-size: 12px; width: 200px !important;"
                     data-toggle="modal" data-target="#addModal">
                 Ürün ekle
             </button>
@@ -259,9 +261,9 @@
                 </a>
             </td>
             <td class="product-cell sales red-text">
-                <button class="btn btn-danger my-btn" data-toggle="modal"
+                <button class="btn my-btn-danger" data-toggle="modal"
                         th:attr="data-target='#deleteModal'+${product.id}">
-                    <i class="material-icons " style="font-size:15px">delete</i></button>
+                    <i class="material-icons " style="font-size:15px;">delete</i></button>
                 <!-- DELETE MODAL -->
                 <div class="modal fade"
                      tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
