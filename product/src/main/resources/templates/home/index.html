@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+    .kritik-stoklar {
+        font-family: Helvetica, Arial, sans-serif; /* Helvetica, Arial, genel sans-serif yedekleri */
+        font-size: 24px;
+        font-weight: bold;
+        color: #FF5733; /* Renk seçimi: Turuncu tonu */
+        margin-bottom: 15px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* Diğer stiller buraya eklenebilir */
+</style>
+    <style>
+    .col-md-12.d-flex {
+        margin-top: 20px;
+    }
+
+    .col-md-6 {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #f8f8f8;
+        margin-right: 20px;
+    }
+
+    #columnChartContainer {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .chart-description {
+        text-align: center;
+        margin-top: 10px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .table.no-highlight {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table.no-highlight th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .table.no-highlight td {
+        vertical-align: middle;
+    }
+
+    .product-cell.stock {
+        color: red !important;
+        font-weight: bold;
+    }
+</style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<!-- CSS -->
+<link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.0/dist/apexcharts.min.js"></script>
+</head>
+
+
+<body class="d-flex">
+<div style="display: flex;" th:insert="~{fragments/header :: header}"></div>
+<div style="margin-left: auto;
+            margin-top: auto;" class="app-content">
+    <main style="margin-top: 50px;">
+        <div class="row">
+            <div class="col-md-4 col-lg-3">
+                <div class="widget-small primary coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"
+                                                                   style="background-color : #537FE7"></i>
+                    <div class="info">
+                        <h4><a href="/products">Ürünler</a></h4>
+                        <p th:text="${productCount}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="widget-small danger coloured-icon"><i class="icon fa fa-list fa-3x"
+                                                                  style="background-color : #A13333"></i>
+                    <div class="info">
+                        <h4><a href="/categories">Kategoriler</a></h4>
+                        <p th:text="${categoryCount}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="widget-small warning coloured-icon"><i class="icon fa fa-font-awesome fa-3x"
+                                                                   style="background-color : #5B4B8A"></i>
+                    <div class="info">
+                        <h4><a href="/brands">Markalar</a></h4>
+                        <p th:text="${brandCount}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"
+                                                                   style="background-color : #SDF78A"></i>
+                    <div class="info">
+                        <h4><a href="/suppliers">Tedarikçiler</a></h4>
+                        <p th:text="${supplierCount}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 d-flex">
+                <div class="col-md-6">
+                    <div id="columnChartContainer">
+                        <canvas id="columnChart"></canvas>
+                    </div>
+                    <p class="chart-description">Ürün stok miktarlarını gösteren sütun grafiği.</p>
+                </div>
+
+                <div class="col-md-6 d-none">
+                    <table class="table no-highlight my-table">
+                        <thead class="text-white">
+                        <tr>
+                            <th class="product-cell category">Id</th>
+                            <th class="product-cell image">Ürün adı</th>
+                            <th class="product-cell image">Stok</th>
+                            <th class="product-cell status-cell">Tedarikçi</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr class="products-row" th:each="product : ${products}">
+                            <td class="product-cell sales red-text" th:text="${product.id}"></td>
+                            <td class="product-cell sales red-text" th:text="${product.productName}"></td>
+                            <td class="product-cell sales red-text"
+                                style="color:red !important; font-weight: bold;" th:text="${product.unitsInStock}"></td>
+                            <td class="product-cell sales red-text">
+                                <a  th:href="@{/products/supplier(supplierId=${product.supplier.id})}" th:text="${product.supplier.companyName}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<script>
+    // Tablodaki verileri alın
+    var productRows = document.querySelectorAll('.products-row');
+    var dataLabels = [];
+    var dataValues = [];
+
+    productRows.forEach(function(row) {
+        var productName = row.querySelector('.product-cell:nth-child(2)').textContent;
+        var unitsInStock = parseInt(row.querySelector('.product-cell:nth-child(3)').textContent);
+        dataLabels.push(productName);
+        dataValues.push(unitsInStock);
+    });
+
+    // Sütun grafiğini oluşturun
+    var ctx = document.getElementById('columnChart').getContext('2d');
+    var columnChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dataLabels,
+            datasets: [{
+                label: 'Stok miktarı',
+                data: dataValues,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Grafik renkleri
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+</script>
+
+
+
+</body>
+</html>

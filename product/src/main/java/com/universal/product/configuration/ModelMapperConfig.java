@@ -1,6 +1,4 @@
 package com.universal.product.configuration;
-
-import com.universal.product.converter.DtoConverter;
 import com.universal.product.repository.ProductRepository;
 import com.universal.product.service.abstracts.ProductService;
 import com.universal.product.service.concretes.ProductServiceImpl;

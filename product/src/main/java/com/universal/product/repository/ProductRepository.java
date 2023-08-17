@@ -13,4 +13,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT * FROM products WHERE supplier_id=:supplierId",nativeQuery = true)
     List<Product> findBySupplierId(@Param("supplierId") Long supplierId);
+
+    @Query(value = "SELECT * FROM products WHERE category_id=:categoryId",nativeQuery = true)
+    List<Product> findByCategoryId(@Param("categoryId")Long categoryId);
+    @Query(value = "SELECT * FROM products WHERE brand_id=:brandId",nativeQuery = true)
+    List<Product> findByBrandId(Long brandId);
+
+    @Query(value = "SELECT * FROM products WHERE units_in_stock < 10 ORDER BY units_in_stock ASC", nativeQuery = true)
+    List<Product> criticalStock();
 }

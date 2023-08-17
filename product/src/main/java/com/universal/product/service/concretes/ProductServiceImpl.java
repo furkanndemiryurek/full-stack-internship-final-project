@@ -106,4 +106,53 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
         return dtos;
     }
+
+    public List<ProductDto> findBySupplierId(Long supplierId) {
+        List<ProductDto> dtos = null;
+        if (supplierId==0){
+            List<Product> products = productRepository.findAll();
+            dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                    .collect(Collectors.toList());
+        }else{
+            List<Product> products = productRepository.findBySupplierId(supplierId);
+            dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                    .collect(Collectors.toList());
+        }
+        return dtos;
+    }
+
+
+    public List<ProductDto> findByCategoryId(Long categoryId) {
+        List<ProductDto> dtos = null;
+        if (categoryId==0){
+            List<Product> products = productRepository.findAll();
+            dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                    .collect(Collectors.toList());
+        }else{
+            List<Product> products = productRepository.findByCategoryId(categoryId);
+            dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                    .collect(Collectors.toList());
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<ProductDto> findByBrandId(Long brandId) {
+        List<ProductDto> dtos = null;
+        List<Product> products = null;
+        if (brandId==0)products = productRepository.findAll();
+        else products = productRepository.findByBrandId(brandId);
+
+        dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+        return dtos;
+    }
+
+    @Override
+    public List<ProductDto> criticalStock() {
+        List<Product> products = productRepository.criticalStock();
+        List<ProductDto> dtos = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+        return dtos;
+    }
 }

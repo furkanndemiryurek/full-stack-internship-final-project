@@ -31,117 +31,126 @@
 
 
 <div style="margin-left: auto;" class="app-content">
-    <div class="app-content-header">
-        <h1 class="app-content-headerText">Brands</h1>
-        <button type="button" class="btn btn-primary p-3 mt-3 mb-5 my-btn" data-toggle="modal" data-target="#addModal">
-            Add new brand
-        </button>
+    <div class="app-content-header mb-3">
+        <div>
+            <button type="button" class="btn btn-primary btn-sm p-2 mt-2 mb-2 my-btn"
+                    style="font-size: 12px;"
+                    data-toggle="modal" data-target="#addModal">
+                Marka ekle
+            </button>
+        </div>
+        <div>
+
+        </div>
     </div>
 
+    <hr width="100%;" color="#f1f2f6"
+        size="10">
 
-        <table id ="brandstable" class="table">
 
-            <thead class="text-white">
-                <tr>
-                    <th class="product-cell category">Id
+    <table id="brandstable" class="table my-table">
 
-                    </th>
+        <thead class="text-white">
+        <tr>
+            <th class="product-cell category">Id
 
-                    <th class="product-cell image">
-                        Marka
+            </th>
 
-                    </th>
+            <th class="product-cell image">
+                Marka
 
-                    <th class="product-cell image">
-                        Sil
-                    </th>
-                </tr>
-            </thead>
+            </th>
 
-            <tbody>
-            <tr class="products-row" th:each="brand : ${brands}">
+            <th class="product-cell image">
+                Sil
+            </th>
+        </tr>
+        </thead>
 
-                <td class="product-cell sales red-text">
-                    <a data-toggle="modal" th:attr="data-target='#updateModal'+${brand.id}"
-                       role="button" class="btn"
-                       th:text="${brand.id}" style="color : orange; font-size : 1.25em"></a>
+        <tbody>
+        <tr class="products-row" th:each="brand : ${brands}">
 
-                    <div class="modal fade"
-                         tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-                         th:attr="id='updateModal'+${brand.id}">
-                        <form action="#" th:action="@{/brands/update}" method="POST" th:object="${brand}">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-dark">
+            <td class="product-cell sales red-text">
+                <a data-toggle="modal" th:attr="data-target='#updateModal'+${brand.id}"
+                   role="button" class="btn"
+                   th:text="${brand.id}" style="color : orange; font-size : 1.25em"></a>
 
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" id="id"
-                                                   name="id" th:value="*{id}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Marka adı :</label>
-                                            <input type="text" class="form-control" id="brandName"
-                                                   placeholder="Ürün adı" name="brandName"
-                                                   th:value="*{brandName}">
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a type="button" class="btn btn-secondary text-light my-btn"
-                                           data-dismiss="modal">Kapat</a>
-                                        <button type="submit"
-                                                class="btn btn-primary my-btn">Kaydet
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </td>
-
-                <td class="product-cell sales red-text" th:text="${brand.brandName}"></td>
-
-                <td class="product-cell sales red-text">
-                    <button class="btn btn-danger my-btn" data-toggle="modal"
-                            th:attr="data-target='#deleteModal'+${brand.id}">
-                        <i class="material-icons " style="font-size:15px">delete</i></button>
-                    <!-- DELETE MODAL -->
-                    <div class="modal fade"
-                         tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-                         th:attr="id='deleteModal'+${brand.id}">
+                <div class="modal fade"
+                     tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+                     th:attr="id='updateModal'+${brand.id}">
+                    <form action="#" th:action="@{/brands/update}" method="POST" th:object="${brand}">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Marka siliniyor</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                                <div th:text="${brand.brandName} + ' markasını silmek istiyor musunuz? '"
-                                     class="modal-body text-dark">
+                                <div class="modal-body text-dark">
+
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" id="id"
+                                               name="id" th:value="*{id}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Marka adı :</label>
+                                        <input type="text" class="form-control" id="brandName"
+                                               placeholder="Ürün adı" name="brandName"
+                                               th:value="*{brandName}">
+                                    </div>
+
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary my-btn" data-dismiss="modal">
-                                        Hayır
+                                    <a type="button" class="btn btn-secondary text-light my-btn"
+                                       data-dismiss="modal">Kapat</a>
+                                    <button type="submit"
+                                            class="btn btn-primary my-btn">Kaydet
                                     </button>
-                                    <a type="button" class="btn btn-danger my-btn"
-                                       th:href="@{/brands/deleteById(brandId=${brand.id})}"
-                                    >Evet</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </form>
+                </div>
+            </td>
 
-    </div>
+            <td class="product-cell sales red-text" th:text="${brand.brandName}"></td>
+
+            <td class="product-cell sales red-text">
+                <button class="btn btn-danger my-btn" data-toggle="modal"
+                        th:attr="data-target='#deleteModal'+${brand.id}">
+                    <i class="material-icons " style="font-size:15px">delete</i></button>
+                <!-- DELETE MODAL -->
+                <div class="modal fade"
+                     tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                     th:attr="id='deleteModal'+${brand.id}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Marka siliniyor</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:text="${brand.brandName} + ' markasını silmek istiyor musunuz? '"
+                                 class="modal-body text-dark">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary my-btn" data-dismiss="modal">
+                                    Hayır
+                                </button>
+                                <a type="button" class="btn btn-danger my-btn"
+                                   th:href="@{/brands/deleteById(brandId=${brand.id})}"
+                                >Evet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 </div>
 
 <!-- ADD MODAL -->
@@ -228,6 +237,7 @@ $(document).ready(function() {
         },
     });
 });
+
 
 </script>
 </body>

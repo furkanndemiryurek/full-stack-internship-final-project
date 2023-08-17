@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -76,4 +77,70 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/filterByCategory")
+    @ResponseBody
+    public List<List<Object>> filterByCategory(@RequestParam("categoryId") Long categoryId) {
+        List<ProductDto> filteredProducts = productService.findByCategoryId(categoryId);
+        List<List<Object>> data = new ArrayList<>();
+
+        for (ProductDto product : filteredProducts) {
+            List<Object> row = new ArrayList<>();
+            row.add(product.getId());
+            row.add(product.getImage());
+            row.add(product.getProductName());
+            row.add(product.getBrand().getBrandName());
+            row.add(product.getCategory().getCategoryName());
+            row.add(product.getUnitsInStock());
+            row.add(product.getUnitPrice());
+            row.add(product.getSupplier().getCompanyName());
+
+            data.add(row);
+        }
+
+        return data;
+    }
+
+    @GetMapping("/filterByBrand")
+    @ResponseBody
+    public List<List<Object>> filterByBrand(@RequestParam("brandId") Long brandId) {
+        List<ProductDto> filteredProducts = productService.findByBrandId(brandId);
+        List<List<Object>> data = new ArrayList<>();
+
+        for (ProductDto product : filteredProducts) {
+            List<Object> row = new ArrayList<>();
+            row.add(product.getId());
+            row.add(product.getImage());
+            row.add(product.getProductName());
+            row.add(product.getBrand().getBrandName());
+            row.add(product.getCategory().getCategoryName());
+            row.add(product.getUnitsInStock());
+            row.add(product.getUnitPrice());
+            row.add(product.getSupplier().getCompanyName());
+
+            data.add(row);
+        }
+
+        return data;
+    }
+
+    @GetMapping("/filterBySupllier")
+    @ResponseBody
+    public List<List<Object>> filterBySupplier(@RequestParam("supplierId") Long supplierId) {
+        List<ProductDto> filteredProducts = productService.findByBrandId(supplierId);
+        List<List<Object>> data = new ArrayList<>();
+        for (ProductDto product : filteredProducts) {
+            List<Object> row = new ArrayList<>();
+            row.add(product.getId());
+            row.add(product.getImage());
+            row.add(product.getProductName());
+            row.add(product.getBrand().getBrandName());
+            row.add(product.getCategory().getCategoryName());
+            row.add(product.getUnitsInStock());
+            row.add(product.getUnitPrice());
+            row.add(product.getSupplier().getCompanyName());
+
+            data.add(row);
+        }
+        return data;
+    }
 }

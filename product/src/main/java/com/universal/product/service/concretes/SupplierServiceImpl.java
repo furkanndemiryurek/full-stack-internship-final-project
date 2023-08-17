@@ -2,6 +2,7 @@ package com.universal.product.service.concretes;
 
 import com.universal.product.dto.SupplierDetailDto;
 import com.universal.product.dto.SupplierDto;
+import com.universal.product.dto.SupplierProductCountDto;
 import com.universal.product.entity.Supplier;
 import com.universal.product.entity.SupplierDetail;
 import com.universal.product.repository.SupplierRepository;
@@ -82,4 +83,6 @@ public class SupplierServiceImpl implements SupplierService {
         supplierRepository.save(tempSupplier);
         return entity;
     }
+    
+
 }

@@ -22,211 +22,276 @@
 
     <!-- ICON -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grenze&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <style>
+        .filter-div {
+            transition: opacity 0.5s ease-in-out;
+        }
 
+
+
+    </style>
 
 </head>
+
 <body class="d-flex">
+
 <!-- partial:index.partial.html -->
 
 <div style="display: flex;" th:insert="~{fragments/header :: header}"></div>
 
 
 <div style="margin-left: auto;" class="app-content">
-    <div class="app-content-header">
-        <h1 class="app-content-headerText">Products</h1>
-        <button type="button" class="btn btn-primary p-3 mt-3 mb-5 my-btn" style="font-size:16px" data-toggle="modal"
-                data-target="#addModal">
-            Add new product
-        </button>
+    <div class="app-content-header d-flex mt-3">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-sm p-2 mt-2 mb-2 my-btn" style="font-size: 12px;"
+                    data-toggle="modal" data-target="#addModal">
+                Ürün ekle
+            </button>
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="justify-content: space-between;">
+                <div class="col-md-3 filter-div" style="opacity:0;" id="supFilter">
+                    <div class="filter-label">Firmaya göre filtrele:</div>
+                    <select id="supplierFilter" class="form-control form-control-sm">
+                        <option value="Tüm tedarikçiler">Tüm tedarikçiler</option>
+                        <option th:each="supplier: ${suppliers}" th:value="${supplier.companyName}"
+                                th:text="${supplier.companyName}"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 filter-div" style="opacity:0;" id="catFilter">
+                    <div class="filter-label" style="width:110%">Kategoriye göre filtrele:</div>
+                    <select id="categoryFilter" class="form-control form-control-sm">
+                        <option value="Tüm kategoriler">Tüm kategoriler</option>
+                        <option th:each="category: ${categories}" th:value="${category.id}"
+                                th:text="${category.categoryName}"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 filter-div" style="opacity:0;" id="braFilter">
+                    <div class="filter-label">Markaya göre filtrele:</div>
+                    <select id="brandFilter" class="form-control  form-control-sm">
+                        <option value="Tüm markalar">Tüm markalar</option>
+                        <option th:each="brand: ${brands}" th:value="${brand.brandName}"
+                                th:text="${brand.brandName}"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <a class="btn btn-primary btn-sm float-right" id="filterButton"
+                       style="
+                   height: 50%;
+                   margin-top:20px;
+                   color:white;
+                   ">
+                        <i class="material-icons">filter_alt</i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-        <table id="productstable" class="table">
-            <thead class="text-white">
-            <tr>
-                <td class="product-cell category">Id</td>
-                <td class="product-cell image">Görsel</td>
-                <td class="product-cell image">Ürün adı</td>
-                <td class="product-cell status-cell">Marka</td>
-                <td class="product-cell sales">Kategori</td>
-                <td class="product-cell stock">Stok</td>
-                <td class="product-cell price">Fiyat</td>
-                <td class="product-cell price">Tedarikçi</td>
-                <td class="product-cell price">Sil</td>
-            </tr>
-            </thead>
+    <hr width="100%;" color="#f1f2f6"
+        size="10">
 
-            <tbody>
-            <tr class="products-row" th:each="product : ${products}">
+    <hr class="color:white">
+    <table id="productstable" class="table no-highlight my-table">
+        <thead class="text-white">
+        <tr>
+            <th class="product-cell category">Id</th>
+            <th class="product-cell image">Görsel</th>
+            <th class="product-cell image">Ürün adı</th>
+            <th class="product-cell status-cell">Marka</th>
+            <th class="product-cell sales">Kategori</th>
+            <th class="product-cell stock">Stok</th>
+            <th class="product-cell price">Fiyat</th>
+            <th class="product-cell price">Tedarikçi</th>
+            <th class="product-cell price">Sil</th>
+        </tr>
+        </thead>
 
-                <td class="product-cell sales red-text">
-                    <a data-toggle="modal" th:attr="data-target='#updateModal'+${product.id}"
-                       role="button" class="btn"
-                       th:text="${product.id}" style="color : orange; font-size : 1.25em"></a>
+        <tbody>
+        <tr class="products-row" th:each="product : ${products}">
 
-                    <div class="modal fade"
-                         tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-                         th:attr="id='updateModal'+${product.id}">
-                        <form action="#" th:action="@{/products/update}" method="POST" th:object="${product}">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-dark">
+            <td class="product-cell sales red-text">
+                <a data-toggle="modal" th:attr="data-target='#updateModal'+${product.id}"
+                   role="button" class="btn"
+                   th:text="${product.id}" style="color : orange; font-size : 1.25em"></a>
 
-                                        <div class="form-group">
-                                            <input type="hidden" class="form-control" id="id"
-                                                   name="id" th:value="*{id}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Ürün adı :</label>
-                                            <input type="text" class="form-control" id="productName"
-                                                   placeholder="Ürün adı" name="productName"
-                                                   th:value="*{productName}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Ürün açıklaması :</label>
-                                            <input type="text" class="form-control" id="description"
-                                                   placeholder="Ürün açıklaması" name="description"
-                                                   th:value="*{description}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Ürün fiyatı :</label>
-                                            <input type="text" class="form-control" id="unitPrice"
-                                                   placeholder="Ürün fiyatı" name="unitPrice"
-                                                   th:value="*{unitPrice}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Stok :</label>
-                                            <input type="text" class="form-control" id="unitsInStock"
-                                                   placeholder="Stok adedi" name="unitsInStock"
-                                                   th:value="*{unitsInStock}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Ürün görseli :</label>
-                                            <input type="text" class="form-control" id="image"
-                                                   placeholder="Ürün görseli" name="image" th:value="*{image}">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Kategori
-                                                :</label> <select name="category.id" class="form-control">
-                                            <option value="0" selected disabled hidden>
-                                                <p th:text="${product.category.categoryName}"></p>
-                                            </option>
-                                            <option th:each="category : ${categories}"
-                                                    th:value="${category.id}"
-                                                    th:text="${category.categoryName}">
-                                        </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Marka :
-                                            </label> <select name="brand.id" class="form-control">
-                                            <option value="0" selected disabled hidden>
-                                                <p th:text="${product.brand.brandName}"></p>
-                                            </option>
-                                            <option th:each="brand : ${brands}"
-                                                    th:value="${brand.id}" th:text="${brand.brandName}">
-                                        </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-form-label">Tedarikçi :
-                                            </label>
-                                            <select name="supplier.id" class="form-control">
-                                                <option value="0" selected disabled hidden>
-                                                    <p th:text="${product.supplier.companyName}"></p>
-                                                </option>
-                                                <option th:each="supplier : ${suppliers}"
-                                                        th:value="${supplier.id}" th:text="${supplier.companyName}">
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a type="button" class="btn btn-secondary text-light my-btn"
-                                           data-dismiss="modal">Kapat</a>
-                                        <button type="submit"
-                                                class="btn btn-primary my-btn">Kaydet
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </td>
-
-                <td class="product-cell sales red-text">
-                    <img th:src="${product.image}" class="my-image" alt="product">
-                </td>
-
-                <td class="product-cell sales red-text" th:text="${product.productName}"></td>
-
-                <td class="product-cell sales red-text" th:text="${product.brand.brandName}"><span
-                        class="cell-label"></span></td>
-
-                <td class="product-cell sales red-text" th:text="${product.category.categoryName}"></td>
-
-                <td class="product-cell sales red-text" th:text="${product.unitsInStock}"></td>
-
-                <td class="product-cell sales red-text" th:text="${product.unitPrice} + ' ₺'"></td>
-                <td class="product-cell sales red-text">
-                    <a  th:text="${product.supplier.companyName}"
-                    th:href="@{/products/supplier(supplierId=${product.supplier.id})}"
-                    data-toggle="tooltip" data-placement="top"
-                    style="color : cyan;
-                    font-size : 1.25em;
-                    text-decoration: none"
-                    role="button"
-                    th:title="${product.supplier.supplierDetail.address} + ' ' +
-                    ${product.supplier.supplierDetail.district} + ' ' +
-                    ${product.supplier.supplierDetail.city}  +'&#010'+
-                    ${product.supplier.supplierDetail.email} +'&#013'+
-                    ${product.supplier.supplierDetail.phone}"><span class="cell-label"></span></a>
-                </td>
-
-                <td class="product-cell sales red-text">
-                    <button class="btn btn-danger my-btn" data-toggle="modal"
-                            th:attr="data-target='#deleteModal'+${product.id}">
-                        <i class="material-icons " style="font-size:15px">delete</i></button>
-
-                    <!-- DELETE MODAL -->
-                    <div class="modal fade"
-                         tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-                         th:attr="id='deleteModal'+${product.id}">
+                <div class="modal fade"
+                     tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+                     th:attr="id='updateModal'+${product.id}">
+                    <form action="#" th:action="@{/products/update}" method="POST" th:object="${product}">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title text-dark" id="exampleModalLabel">Ürün siliniyor</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                                <div th:text="${product.productName} + ' ürününü silmek istiyor musunuz? '"
-                                     class="modal-body text-dark">
+                                <div class="modal-body text-dark">
+
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" id="id"
+                                               name="id" th:value="*{id}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Ürün adı :</label>
+                                        <input type="text" class="form-control" id="productName"
+                                               placeholder="Ürün adı" name="productName"
+                                               th:value="*{productName}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Ürün açıklaması :</label>
+                                        <input type="text" class="form-control" id="description"
+                                               placeholder="Ürün açıklaması" name="description"
+                                               th:value="*{description}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Ürün fiyatı :</label>
+                                        <input type="text" class="form-control" id="unitPrice"
+                                               placeholder="Ürün fiyatı" name="unitPrice"
+                                               th:value="*{unitPrice}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Stok :</label>
+                                        <input type="text" class="form-control" id="unitsInStock"
+                                               placeholder="Stok adedi" name="unitsInStock"
+                                               th:value="*{unitsInStock}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Ürün görseli :</label>
+                                        <input type="text" class="form-control" id="image"
+                                               placeholder="Ürün görseli" name="image" th:value="*{image}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Kategori
+                                            :</label> <select name="category.id" class="form-control">
+                                        <option value="0" selected disabled hidden>
+                                            <p th:text="${product.category.categoryName}"></p>
+                                        </option>
+                                        <option th:each="category : ${categories}"
+                                                th:value="${category.id}"
+                                                th:text="${category.categoryName}">
+                                    </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Marka :
+                                        </label> <select name="brand.id" class="form-control">
+                                        <option value="0" selected disabled hidden>
+                                            <p th:text="${product.brand.brandName}"></p>
+                                        </option>
+                                        <option th:each="brand : ${brands}"
+                                                th:value="${brand.id}" th:text="${brand.brandName}">
+                                    </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-form-label">Tedarikçi :
+                                        </label>
+                                        <select name="supplier.id" class="form-control">
+                                            <option value="0" selected disabled hidden>
+                                                <p th:text="${product.supplier.companyName}"></p>
+                                            </option>
+                                            <option th:each="supplier : ${suppliers}"
+                                                    th:value="${supplier.id}" th:text="${supplier.companyName}">
+                                        </select>
+                                    </div>
+
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary my-btn" data-dismiss="modal">
-                                        Hayır
+                                    <a type="button" class="btn btn-secondary text-light my-btn"
+                                       data-dismiss="modal">Kapat</a>
+                                    <button type="submit"
+                                            class="btn btn-primary my-btn">Kaydet
                                     </button>
-                                    <a type="button" class="btn btn-danger my-btn"
-                                       th:href="@{/products/deleteById(productId=${product.id})}"
-                                    >Evet</a>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                </div>
+            </td>
+
+            <td class="product-cell sales red-text">
+                <img th:src="${product.image}" class="my-image" alt="product">
+            </td>
+
+            <td class="product-cell sales red-text" th:text="${product.productName}"></td>
+
+            <td class="product-cell sales red-text" th:text="${product.brand.brandName}"><span
+                    class="cell-label"></span></td>
+
+            <td class="product-cell sales red-text" th:text="${product.category.categoryName}"></td>
+
+            <td class="product-cell sales red-text" th:text="${product.unitsInStock}"></td>
+
+            <td class="product-cell sales red-text" th:text="${product.unitPrice} + ' ₺'"></td>
+
+            <td class="product-cell sales red-text">
+                <span class="material-symbols-outlined"
+                      style="vertical-align: middle;
+                            color:#96B6C5;">play_arrow</span>
+
+                <a th:text="${product.supplier.companyName}"
+                   th:href="@{/products/supplier(supplierId=${product.supplier.id})}"
+                   data-toggle="tooltip" data-placement="top"
+                   style="color: #3d3d3d; font-size: 1em;"
+                   role="button"
+                   th:title="${product.supplier.supplierDetail.address} + ' ' +
+        ${product.supplier.supplierDetail.district} + ' ' +
+        ${product.supplier.supplierDetail.city}  +'&#010'+
+        ${product.supplier.supplierDetail.email} +'&#013'+
+        ${product.supplier.supplierDetail.phone}">
+
+                </a>
+            </td>
+            <td class="product-cell sales red-text">
+                <button class="btn btn-danger my-btn" data-toggle="modal"
+                        th:attr="data-target='#deleteModal'+${product.id}">
+                    <i class="material-icons " style="font-size:15px">delete</i></button>
+                <!-- DELETE MODAL -->
+                <div class="modal fade"
+                     tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                     th:attr="id='deleteModal'+${product.id}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="exampleModalLabel">Ürün siliniyor</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:text="${product.productName} + ' ürününü silmek istiyor musunuz? '"
+                                 class="modal-body text-dark">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary my-btn" data-dismiss="modal">
+                                    Hayır
+                                </button>
+                                <a type="button" class="btn btn-danger my-btn"
+                                   th:href="@{/products/deleteById(productId=${product.id})}"
+                                >Evet</a>
+                            </div>
+                        </div>
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 </div>
 </div>
@@ -329,13 +394,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+
 <script>
 $(document).ready(function() {
-    $('#productstable').DataTable({
-            					'aoColumnDefs' : [ {
-						'bSortable' : false,
-						'aTargets' : [ -1, -8]
-					} ],
+    var table =  $('#productstable').DataTable({
+    'aoColumnDefs': [
+    {
+        'bSortable': false,
+        'aTargets': [-1, -8]  // Tablonuzdaki toplam 9 sütun varsa, burada -1, -2, -3 değerlerini kullanabilirsiniz.
+    }
+],
         "language": {
             "sEmptyTable": "Tabloda herhangi bir veri mevcut değil",
             "sInfo": "Toplam _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
@@ -367,8 +436,60 @@ $(document).ready(function() {
             }
         },
     });
-});
-</script>
 
+    var initialData = table.data().toArray();
+
+    $('#categoryFilter').on('change', function() {
+        var categoryName = $(this).find('option:selected').text();
+
+        if (categoryName === "Tüm kategoriler") {
+            table.search('').columns().search('').draw();
+        } else {
+            table.columns(4).search(categoryName).draw();
+        }
+    });
+
+    $('#brandFilter').on('change', function() {
+        var brandName = $(this).find('option:selected').text();
+
+        if (brandName === "Tüm markalar") {
+            table.columns(3).search('').draw(); // Clear filter for Brand column
+        } else {
+            table.columns(3).search(brandName).draw();
+        }
+    });
+
+        $('#supplierFilter').on('change', function() {
+        var supplierName = $(this).find('option:selected').text();
+
+        if (supplierName === "Tüm tedarikçiler") {
+            table.columns(7).search('').draw(); // Clear filter for Brand column
+        } else {
+            table.columns(7).search(supplierName).draw();
+        }
+    });
+});
+
+</script>
+<script>
+        document.getElementById('filterButton').addEventListener('click', function() {
+        var supFilterDiv = document.getElementById('supFilter');
+        var catFilterDiv = document.getElementById('catFilter');
+        var braFilterDiv = document.getElementById('braFilter');
+        if(supFilterDiv.style.opacity < 0.9){
+            supFilterDiv.style.opacity = '1';
+            catFilterDiv.style.opacity = '1';
+            braFilterDiv.style.opacity = '1';
+        }else{
+            supFilterDiv.style.opacity = '0';
+            catFilterDiv.style.opacity = '0';
+            braFilterDiv.style.opacity = '0';
+        }
+
+        });
+
+</script>
 </body>
 </html>
+
+
