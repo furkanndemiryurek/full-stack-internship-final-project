@@ -261,7 +261,7 @@
                 </a>
             </td>
             <td class="product-cell sales red-text">
-                <button class="btn my-btn-danger" data-toggle="modal"
+                <button class="btn btn-danger my-btn-danger" data-toggle="modal"
                         th:attr="data-target='#deleteModal'+${product.id}">
                     <i class="material-icons " style="font-size:15px;">delete</i></button>
                 <!-- DELETE MODAL -->
@@ -482,6 +482,7 @@ $(document).ready(function() {
             supFilterDiv.style.opacity = '1';
             catFilterDiv.style.opacity = '1';
             braFilterDiv.style.opacity = '1';
+
         }else{
             supFilterDiv.style.opacity = '0';
             catFilterDiv.style.opacity = '0';
